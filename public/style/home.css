@@ -1,0 +1,28 @@
+header{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+#home_image{
+    height: 630px;
+    background-image: url("../images/Tricks/backflip.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+.slogan{
+    padding-top: 300px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 65px;
+}
+
+.chevron-down {
+    position: absolute;
+    right: 0.5%;
+    bottom: 0%;
+}
