@@ -26,3 +26,38 @@ header{
     right: 0.5%;
     bottom: 0%;
 }
+
+.btn-primary{
+    margin: 25px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+/* FLEX  */
+
+.flex_container {
+    max-width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 154px;
+}
+
+.flex_container div {
+    width: 100px;
+    height: 100px;
+    margin: 80px;
+    background-color: lightblue;
+}
+
+.tricks_home{
+    max-width: 250px;
+}
+
+.card-item {
+    display: inline-block;
+  }
+.card-actions{
+    text-align: center;
+}
+  
+  .hide {
+    display: none;
+  }

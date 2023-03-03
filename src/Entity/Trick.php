@@ -2,9 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\TrickRepository;
+use Collection;
+use App\Entity\User;
+use App\Entity\Video;
+use App\Entity\Picture;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TrickRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 class Trick
@@ -25,6 +30,23 @@ class Trick
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_update = null;
+
+    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"tricks")]
+    private $users;
+
+    #[ORM\OneToMany(targetEntity:"App\Entity\Video", mappedBy:"trick", orphanRemoval:true, cascade: ['persist'])]
+    private $videos;
+
+    #[ORM\OneToMany(targetEntity:"App\Entity\Picture", mappedBy:"trick", orphanRemoval:true, cascade: ['persist'])]
+    private $pictures;
+
+    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"trick", orphanRemoval:true)]
+    private $comment;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'image/tiff', 'image/svg+xml'])]
+    private $mainImage;
+
 
     public function getId(): ?int
     {
@@ -75,6 +97,106 @@ class Trick
     public function setDateUpdate(\DateTimeInterface $date_update): self
     {
         $this->date_update = $date_update;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of videos
+     */ 
+    public function getVideos()
+    {
+        return $this->videos;
+    }
+
+    /**
+     * Set the value of videos
+     *
+     * @return  self
+     */ 
+    public function setVideos($videos)
+    {
+        $this->videos = $videos;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of users
+     */ 
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Set the value of users
+     *
+     * @return  self
+     */ 
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comment
+     */ 
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set the value of comment
+     *
+     * @return  self
+     */ 
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pictures
+     */ 
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * Set the value of pictures
+     *
+     * @return  self
+     */ 
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mainImage
+     */ 
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * Set the value of mainImage
+     *
+     * @return  self
+     */ 
+    public function setMainImage($mainImage)
+    {
+        $this->mainImage = $mainImage;
 
         return $this;
     }

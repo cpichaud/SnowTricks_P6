@@ -11,9 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('/', name: '_profiler_home', methods: ['GET'])]
-    public function index(): Response
+    public function index(TrickRepository $trick): Response
     {
-        
-        return $this->render('/home.html.twig');
+        $tricks = $trick->findBy([], ['date_created' => 'DESC']);
+       // $pictures = $trick->getPictures();
+
+        return $this->render('/home.html.twig', [
+            'tricks' => $tricks,
+        ]);
     }
 }
