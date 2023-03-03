@@ -32,6 +32,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\OneToMany(targetEntity:"App\Entity\Trick", mappedBy:"user", orphanRemoval:true)]
+    private $tricks;
+
+    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"user", orphanRemoval:true)]
+    private $comments;
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +137,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set the value of comments
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tricks
+     */ 
+    public function getTricks()
+    {
+        return $this->tricks;
+    }
+
+    /**
+     * Set the value of tricks
+     *
+     * @return  self
+     */ 
+    public function setTricks($tricks)
+    {
+        $this->tricks = $tricks;
 
         return $this;
     }

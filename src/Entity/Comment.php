@@ -22,6 +22,12 @@ class Comment
 
     #[ORM\Column(length: 255)]
     private ?string $content = null;
+    
+    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"comments")]
+    private $users;
+
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"comments")]
+    private $tricks;
 
     public function getId(): ?int
     {
@@ -60,6 +66,46 @@ class Comment
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of users
+     */ 
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Set the value of users
+     *
+     * @return  self
+     */ 
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tricks
+     */ 
+    public function getTricks()
+    {
+        return $this->tricks;
+    }
+
+    /**
+     * Set the value of tricks
+     *
+     * @return  self
+     */ 
+    public function setTricks($tricks)
+    {
+        $this->tricks = $tricks;
 
         return $this;
     }

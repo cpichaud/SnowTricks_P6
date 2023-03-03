@@ -23,6 +23,10 @@ class Picture
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_created = null;
 
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"picture")]
+    private $tricks;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,26 @@ class Picture
     public function setDateCreated(\DateTimeInterface $date_created): self
     {
         $this->date_created = $date_created;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tricks
+     */ 
+    public function getTricks()
+    {
+        return $this->tricks;
+    }
+
+    /**
+     * Set the value of tricks
+     *
+     * @return  self
+     */ 
+    public function setTricks($tricks)
+    {
+        $this->tricks = $tricks;
 
         return $this;
     }

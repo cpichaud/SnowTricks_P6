@@ -1,0 +1,63 @@
+header{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+#home_image{
+    height: 630px;
+    background-image: url("../images/Tricks/backflip.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+.slogan{
+    padding-top: 300px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 65px;
+}
+
+.chevron-down {
+    position: absolute;
+    right: 0.5%;
+    bottom: 0%;
+}
+
+.btn-primary{
+    margin: 25px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+/* FLEX  */
+
+.flex_container {
+    max-width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 154px;
+}
+
+.flex_container div {
+    width: 100px;
+    height: 100px;
+    margin: 80px;
+    background-color: lightblue;
+}
+
+.tricks_home{
+    max-width: 250px;
+}
+
+.card-item {
+    display: inline-block;
+  }
+.card-actions{
+    text-align: center;
+}
+  
+  .hide {
+    display: none;
+  }
