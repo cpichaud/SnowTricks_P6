@@ -1,0 +1,11 @@
+{% extends 'index.html.twig' %}
+{% block body %}
+    <main class="h-100">
+        {{ form_start(form) }}
+            {{ form_widget(form.title) }}
+            {{ form_widget(form.content) }}
+            {{ form_widget(form.mainImage) }}
+        {{ form_end(form) }}
+
+    </main>
+{% endblock %}
