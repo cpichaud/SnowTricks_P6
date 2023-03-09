@@ -23,8 +23,10 @@ class Picture
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_created = null;
 
-    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"picture")]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"pictures", cascade:["remove"])]
     private $tricks;
+    
+    
 
 
     public function getId(): ?int

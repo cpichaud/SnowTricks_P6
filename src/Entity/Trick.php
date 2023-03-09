@@ -34,14 +34,14 @@ class Trick
     #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"tricks")]
     private $users;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Video", mappedBy:"trick", orphanRemoval:true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity:"App\Entity\Video", mappedBy:"tricks", orphanRemoval:true, cascade: ['persist'])]
     private $videos;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Picture", mappedBy:"trick", orphanRemoval:true, cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity:"App\Entity\Picture", mappedBy:"tricks", orphanRemoval:true, cascade: ['persist'])]
     private $pictures;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"trick", orphanRemoval:true)]
-    private $comment;
+    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"tricks", orphanRemoval:true)]
+    private $comments;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'image/tiff', 'image/svg+xml'])]
@@ -142,21 +142,21 @@ class Trick
     }
 
     /**
-     * Get the value of comment
+     * Get the value of comments
      */ 
-    public function getComment()
+    public function getComments()
     {
-        return $this->comment;
+        return $this->comments;
     }
 
     /**
-     * Set the value of comment
+     * Set the value of comments
      *
      * @return  self
      */ 
-    public function setComment($comment)
+    public function setComments($comments)
     {
-        $this->comment = $comment;
+        $this->comments = $comments;
 
         return $this;
     }

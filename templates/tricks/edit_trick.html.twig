@@ -1,0 +1,31 @@
+{% extends 'index.html.twig' %}
+{% block body %}
+    <main class="h-100">
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.content) }}
+            {{ form_row(form.mainImage) }}
+
+            <h2>Videos</h2>
+<ul class="videos">
+    {{ form_widget(form.videos) }}
+</ul>
+
+<ul class="pictures">
+    {{ form_widget(form.pictures) }}
+</ul>
+
+            {{ form_rest(form) }}
+
+            <button class="btn btn-success mt-2" type="submit" onclick="return confirm('Valider les modifications ?')">Valider</button>
+        {{ form_end(form) }}
+        
+         <button class="btn btn-primary mt-2" onclick="return confirm('Annuler les modifications ?')">
+            <a href="{{ path('_profiler_detail_trick', {'tricks': trick.title}) }}">
+                Annuler
+            </a>
+        </button>
+    </main>
+{% endblock %}
