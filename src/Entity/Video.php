@@ -23,7 +23,7 @@ class Video
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_created = null;
 
-    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"picture")]
+    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"videos")]
     private $tricks;
 
     public function getId(): ?int

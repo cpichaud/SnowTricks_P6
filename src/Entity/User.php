@@ -32,10 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Trick", mappedBy:"user", orphanRemoval:true)]
+    #[ORM\OneToMany(targetEntity:"App\Entity\Trick", mappedBy:"users", orphanRemoval:true)]
     private $tricks;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"user", orphanRemoval:true)]
+    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"users", orphanRemoval:true)]
     private $comments;
 
     
