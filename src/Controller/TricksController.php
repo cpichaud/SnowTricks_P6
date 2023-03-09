@@ -13,10 +13,10 @@ class TricksController extends AbstractController
     #[Route('/{tricks}', name: '_profiler_detail_trick', methods: ['GET'])]
     public function showTrick(TrickRepository $trick, Request $request, $tricks): Response
     {
-        $trickstest = $trick->findOneBy(array('name' => $tricks));
+        $trickstest = $trick->findOneBy(array('title' => $tricks));
        // $pictures = $trick->getPictures();
 
-        return $this->render('triks/detail_tricks.html.twig', [
+        return $this->render('tricks\detail_tricks.html.twig', [
             'trickstest' => $trickstest,
         ]);
     }

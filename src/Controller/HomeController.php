@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: '_profiler_home', methods: ['GET'])]
+    #[Route('/', name: '_profiler_home')]
     public function index(TrickRepository $trick): Response
     {
         $tricks = $trick->findBy([], ['date_created' => 'DESC']);
