@@ -1,0 +1,39 @@
+#detail_main_image{
+    height: 630px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tricks_details{
+    width: 100%;
+    object-fit: cover;
+}
+
+.title_detail{
+    position: absolute;
+    margin-top: 300px;
+    margin-left: 200px;
+    color: aliceblue;
+}
+
+/* INFORMATION  */
+
+.info_detail {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+  }
+
+.info_detail p {
+    color: white;
+    background-color: black;
+    float: left;
+    margin-right: 10px;
+    padding: 8px; 
+}
+  
+.form_comment{
+    box-shadow: rgb(0 0 0 / 6%) 0px 0px 4px 2px inset;
+    padding: 1%;
+    margin: 2% 0
+}
