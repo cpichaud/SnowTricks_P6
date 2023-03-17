@@ -61,3 +61,17 @@ header{
   .hide {
     display: none;
   }
+
+
+  
+.login{
+    margin: 500px;
+    margin-top: 50px;
+    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+    padding: 65px;
+    border-radius: 15%;
+}
+.form-group{
+    padding-top:20px;
+
+}

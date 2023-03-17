@@ -1,20 +1,25 @@
 {% extends 'index.html.twig' %}
-
-{% block title %}Hello LoginController!{% endblock %}
+{% block title %}Se connecter{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <section class="login">
+        <h2>Connexion</h2>
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        <form action="{{ path('app_login') }}" method="post">
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required>
+            </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/tricks-p6/SnowTricks_P6/src/Controller/LoginController.php'|file_link(0) }}">src/Controller/LoginController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/tricks-p6/SnowTricks_P6/templates/login/index.html.twig'|file_link(0) }}">templates/login/index.html.twig</a></code></li>
-    </ul>
-</div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="_password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-dark mt-4">Se connecter</button>
+        </form>
+    <section>
 {% endblock %}
