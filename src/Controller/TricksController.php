@@ -49,8 +49,6 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('_profiler_detail_trick');
         }
     
-
-    
         return $this->render('tricks\detail_trick.html.twig', [
             'detailTrick' => $detailTrick,
             'showComments' => $showComments,
