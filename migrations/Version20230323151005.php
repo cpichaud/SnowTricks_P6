@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230217110641 extends AbstractMigration
+final class Version20230323151005 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,16 @@ final class Version20230217110641 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD roles JSON NOT NULL, DROP username, CHANGE password password VARCHAR(255) NOT NULL, CHANGE email email VARCHAR(180) NOT NULL');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON user (email)');
+        $this->addSql('ALTER TABLE trick ADD user_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE trick ADD CONSTRAINT FK_D8F0A91EA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('CREATE INDEX IDX_D8F0A91EA76ED395 ON trick (user_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX UNIQ_8D93D649E7927C74 ON user');
-        $this->addSql('ALTER TABLE user ADD username VARCHAR(100) NOT NULL, DROP roles, CHANGE email email VARCHAR(255) NOT NULL, CHANGE password password VARCHAR(100) NOT NULL');
+        $this->addSql('ALTER TABLE trick DROP FOREIGN KEY FK_D8F0A91EA76ED395');
+        $this->addSql('DROP INDEX IDX_D8F0A91EA76ED395 ON trick');
+        $this->addSql('ALTER TABLE trick DROP user_id');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,13 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Trick", mappedBy:"users", orphanRemoval:true)]
-    private $tricks;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
+    private Collection $tricks;
 
-    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"users", orphanRemoval:true)]
-    private $comments;
-
-    
+    public function __construct()
+    {
+        $this->tricks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -142,41 +144,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Get the value of comments
-     */ 
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
-     * Set the value of comments
-     *
-     * @return  self
-     */ 
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of tricks
-     */ 
-    public function getTricks()
+     * @return Collection<int, Trick>
+     */
+    public function getTricks(): Collection
     {
         return $this->tricks;
     }
 
-    /**
-     * Set the value of tricks
-     *
-     * @return  self
-     */ 
-    public function setTricks($tricks)
+    public function addTrick(Trick $trick): self
     {
-        $this->tricks = $tricks;
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks->add($trick);
+            $trick->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->removeElement($trick)) {
+            // set the owning side to null (unless already changed)
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
+            }
+        }
 
         return $this;
     }

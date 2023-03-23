@@ -1,10 +1,10 @@
-{% extends 'index.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block body %}
 <main class="h-100">
         <section id="detail_main_image">
-        <h3 class="title_detail">{{detailTrick.title}}</h3>
-            <img class ="tricks_details" src="{{ asset('images/Tricks/tricks/' ~ detailTrick.mainImage) }}" alt="{{ detailTrick.title  }}" />
-            <a href="{{ path('_profiler_edit_trick', {'id': detailTrick.id}) }}">
+        <h3 class="title_detail">{{detailTrick.name}}</h3>
+            <img class ="tricks_details" src="{{ asset('images/Tricks/tricks/' ~ detailTrick.mainImage) }}" alt="{{ detailTrick.name  }}" />
+            <a href="{#{{ path('_profiler_edit_trick', {'id': detailTrick.id}) }}#}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
                     <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                 </svg>
@@ -16,11 +16,11 @@
             </a>
         </section>  
       <div class="text-center m-4">
-        <p>{{detailTrick.content}}</p>
+        <p>{{detailTrick.description}}</p>
     </div>
     <div class ="info_detail">
-        <p>{{ detailTrick.getDateCreated()|date('d/m/Y H:i:s') }}</p>
-        <p>{{ detailTrick.getDateUpdate()|date('d/m/Y H:i:s') }}</p>
+        <p>{{ detailTrick.getCreatedAt()|date('d/m/Y H:i:s') }}</p>
+        <p>{{ detailTrick.getUpdatedAt()|date('d/m/Y H:i:s') }}</p>
         <p>Admin</p>
         {# <p>{{detailTrick.user}}</p> #}
     </div>
@@ -29,7 +29,7 @@
         <h5>Ajouter un commentaire</h5>
        {{ form_start(form) }}
         {{ form_row(form.content) }}
-        {{ form_row(form.save, {'method': 'POST'}) }}
+        {# {{ form_row(form.save, {'method': 'POST'}) }} #}
        {{ form_end(form) }}
     </div>
     <div  class="m-4">
@@ -37,7 +37,7 @@
         <div  class="text-center m-4">
             {% for comment in showComments %}
                 {% if comment is not empty %}
-                    <p>{{comment.title}} <span>{{comment.content}}</span></p>
+                    <p>{{comment.name}} <span>{{comment.content}}</span></p>
                     {# <p>{{comment.content}}</p> #}
                 {% else %}
                 <p>Vous n'avez aucun commentaire</p>

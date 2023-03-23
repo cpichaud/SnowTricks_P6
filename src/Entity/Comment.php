@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Entity\Trick;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentRepository;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -14,35 +15,37 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_created = null;
+    #[ORM\Column(length: 255)]
+    private ?string $author = null;
 
     #[ORM\Column(length: 255)]
     private ?string $content = null;
-    
-    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"comments")]
-    private $users;
 
-    #[ORM\ManyToOne(targetEntity:"App\Entity\Trick", inversedBy:"comments")]
-    private $tricks;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: "comments")]
+    #[ORM\JoinColumn(nullable: false)]
+    private $trick;
+    
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDateCreated(): ?\DateTimeInterface
+    public function getAuthor(): ?string
     {
-        return $this->date_created;
+        return $this->author;
     }
 
-    public function setDateCreated(\DateTimeInterface $date_created): self
+    public function setAuthor(string $author): self
     {
-        $this->date_created = $date_created;
+        $this->author = $author;
 
         return $this;
     }
-    
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -55,42 +58,26 @@ class Comment
         return $this;
     }
 
-    /**
-     * Get the value of users
-     */ 
-    public function getUsers()
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->users;
+        return $this->createdAt;
     }
 
-    /**
-     * Set the value of users
-     *
-     * @return  self
-     */ 
-    public function setUsers($users)
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->users = $users;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    /**
-     * Get the value of tricks
-     */ 
-    public function getTricks()
+    public function getTrick(): ?string
     {
-        return $this->tricks;
+        return $this->trick;
     }
 
-    /**
-     * Set the value of tricks
-     *
-     * @return  self
-     */ 
-    public function setTricks($tricks)
+    public function setTrick(string $trick): self
     {
-        $this->tricks = $tricks;
+        $this->trick = $trick;
 
         return $this;
     }

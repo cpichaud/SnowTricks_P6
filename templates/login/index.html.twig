@@ -1,5 +1,6 @@
-{% extends 'index.html.twig' %}
-{% block title %}Se connecter{% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
     <section class="login">
@@ -10,16 +11,17 @@
 
         <form action="{{ path('app_login') }}" method="post">
             <div class="form-group">
-                <label for="username">Nom d'utilisateur :</label>
-                <input type="text" id="username" name="_username" class="form-control" value="{{ last_username }}" required>
+                <label for="email">Nom d'utilisateur :</label>
+                <input type="text" id="email" name="email" class="form-control" value="{{ last_username }}" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="_password" class="form-control" required>
+                <input type="password" id="password" name="password" class="form-control" required>
             </div>
 
             <button type="submit" class="btn btn-dark mt-4">Se connecter</button>
         </form>
+
     <section>
 {% endblock %}
