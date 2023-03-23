@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use Collection;
-use App\Entity\User;
-use App\Entity\Video;
-use App\Entity\Picture;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TrickRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 class Trick
@@ -19,169 +16,117 @@ class Trick
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $title = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $content = null;
+    private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_created = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_update = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(targetEntity:"App\Entity\User", inversedBy:"tricks")]
-    private $users;
-
-    #[ORM\OneToMany(targetEntity:"App\Entity\Video", mappedBy:"tricks", orphanRemoval:true, cascade: ['persist'])]
-    private $videos;
-
-    #[ORM\OneToMany(targetEntity:"App\Entity\Picture", mappedBy:"tricks", orphanRemoval:true, cascade: ['persist'])]
-    private $pictures;
-
-    #[ORM\OneToMany(targetEntity:"App\Entity\Comment", mappedBy:"tricks", orphanRemoval:true)]
-    private $comments;
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class)]
+    private Collection $images;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'image/tiff', 'image/svg+xml'])]
     private $mainImage;
 
+    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getDescription(): ?string
     {
-        return $this->content;
+        return $this->description;
     }
 
-    public function setContent(string $content): self
+    public function setDescription(string $description): self
     {
-        $this->content = $content;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getDateCreated(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->date_created;
+        return $this->createdAt;
     }
 
-    public function setDateCreated(\DateTimeInterface $date_created): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->date_created = $date_created;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getDateUpdate(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->date_update;
+        return $this->updatedAt;
     }
 
-    public function setDateUpdate(\DateTimeInterface $date_update): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
-        $this->date_update = $date_update;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of videos
-     */ 
-    public function getVideos()
-    {
-        return $this->videos;
-    }
-
-    /**
-     * Set the value of videos
-     *
-     * @return  self
-     */ 
-    public function setVideos($videos)
-    {
-        $this->videos = $videos;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get the value of users
-     */ 
-    public function getUsers()
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
     {
-        return $this->users;
+        return $this->images;
     }
 
-    /**
-     * Set the value of users
-     *
-     * @return  self
-     */ 
-    public function setUsers($users)
+    public function addImage(Image $image): self
     {
-        $this->users = $users;
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setTrick($this);
+        }
 
         return $this;
     }
 
-    /**
-     * Get the value of comments
-     */ 
-    public function getComments()
+    public function removeImage(Image $image): self
     {
-        return $this->comments;
-    }
-
-    /**
-     * Set the value of comments
-     *
-     * @return  self
-     */ 
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getTrick() === $this) {
+                $image->setTrick(null);
+            }
+        }
 
         return $this;
     }
 
-    /**
-     * Get the value of pictures
-     */ 
-    public function getPictures()
-    {
-        return $this->pictures;
-    }
-
-    /**
-     * Set the value of pictures
-     *
-     * @return  self
-     */ 
-    public function setPictures($pictures)
-    {
-        $this->pictures = $pictures;
-
-        return $this;
-    }
-
-    /**
+        /**
      * Get the value of mainImage
      */ 
     public function getMainImage()
@@ -197,6 +142,18 @@ class Trick
     public function setMainImage($mainImage)
     {
         $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

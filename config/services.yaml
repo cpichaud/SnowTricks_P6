@@ -20,18 +20,5 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-#     # add more service definitions when explicit configuration is needed
-#     # please note that last definitions always *replace* previous ones
-# security:
-#     providers:
-#         app_user_provider:
-#             entity:
-#                 class: App\Entity\User
-#                 property: email
-
-#                 # config/packages/security.yaml
-
-#     password_hashers:
-#         # Use native password hasher, which auto-selects and migrates the best
-#         # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")
-#         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

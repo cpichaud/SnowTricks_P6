@@ -5,4 +5,4 @@ when@dev:
 
     web_profiler_profiler:
         resource: '@WebProfilerBundle/Resources/config/routing/profiler.xml'
-        prefix: /app_login
+        prefix: /_profiler

@@ -3,20 +3,19 @@
 namespace App\Controller;
 
 use App\Repository\TrickRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: '_profiler_home')]
+    #[Route('/', name: 'app_home')]
     public function index(TrickRepository $trick): Response
     {
-        $tricks = $trick->findBy([], ['date_created' => 'DESC']);
+        $tricks = $trick->findBy([], ['createdAt' => 'DESC']);
        // $pictures = $trick->getPictures();
 
-        return $this->render('/home.html.twig', [
+        return $this->render('/home/index.html.twig', [
             'tricks' => $tricks,
         ]);
     }
