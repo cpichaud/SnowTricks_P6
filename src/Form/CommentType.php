@@ -15,8 +15,12 @@ class CommentType extends AbstractType
     {
         $builder
       
-        ->add('content', TextareaType::class)
-        ->add('save', SubmitType::class);
+        ->add('content', TextareaType::class, [
+            'attr' => ['class' => 'form-control'],
+        ]) 
+        ->add('save', SubmitType::class, [
+            'attr' => ['class' => 'btn btn-success m-2'],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

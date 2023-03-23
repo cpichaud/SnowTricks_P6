@@ -25,20 +25,23 @@
         {# <p>{{detailTrick.user}}</p> #}
     </div>
 
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="form_comment">
         <h5>Ajouter un commentaire</h5>
-       {{ form_start(form) }}
+        {{ form_start(form) }}
         {{ form_row(form.content) }}
-        {# {{ form_row(form.save, {'method': 'POST'}) }} #}
-       {{ form_end(form) }}
+        {{ form_row(form.save, {'method': 'POST'}) }}
+        {{ form_end(form) }}
     </div>
+{% endif %}
+
     <div  class="m-4">
         <h5>Espace commentaires</h5>
         <div  class="text-center m-4">
             {% for comment in showComments %}
                 {% if comment is not empty %}
-                    <p>{{comment.name}} <span>{{comment.content}}</span></p>
-                    {# <p>{{comment.content}}</p> #}
+                    <p>{{ comment.author.email }}<span>{{comment.content}}</span></p>
+                    
                 {% else %}
                 <p>Vous n'avez aucun commentaire</p>
                 {% endif %}
