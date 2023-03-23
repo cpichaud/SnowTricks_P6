@@ -28,7 +28,6 @@
     <div class="form_comment">
         <h5>Ajouter un commentaire</h5>
        {{ form_start(form) }}
-        {{ form_row(form.title) }}
         {{ form_row(form.content) }}
         {{ form_row(form.save, {'method': 'POST'}) }}
        {{ form_end(form) }}
