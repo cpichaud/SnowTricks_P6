@@ -107,10 +107,10 @@ class Trick
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
-            $this->images->add($image);
+            $this->images[] = $image;
             $image->setTrick($this);
         }
-
+    
         return $this;
     }
 

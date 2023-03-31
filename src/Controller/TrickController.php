@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use DateTime;
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\CommentType;
@@ -64,4 +64,47 @@ class TrickController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+/**
+ * @Route("/trick/new", name="trick_new")
+ */
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $trick = new Trick();
+
+    $image = new Image();
+    $trick->getImages()->add($image);
+
+    $form = $this->createForm(TrickType::class, $trick);
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
+        $trick->setUser($this->getUser());
+        $trick->setCreatedAt(new \DateTimeImmutable());
+        $trick->setUpdatedAt(new \DateTimeImmutable());
+
+        // foreach ($trick->getImages() as $image) {
+        //     $imageFile = $image->getImageFile();
+        //     if ($imageFile) {
+        //         $fileName = md5(uniqid()) . '.' . $imageFile->guessExtension();
+        //         $imageFile->move($this->getParameter('images_directory'), $fileName);
+        //         $image->setPath($fileName);
+        //     }
+        // }
+        $entityManager->persist($trick);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le trick a bien été ajouté !');
+
+        return $this->redirectToRoute('app_home');
+    }
+
+    return $this->render('tricks/create.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+    
 }

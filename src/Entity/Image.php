@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -14,7 +16,7 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $filename = null;
+    private ?string $path = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -22,19 +24,36 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Trick $trick = null;
 
+    private ?UploadedFile $imageFile = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFilename(): ?string
+    // public function getFile(): ?string
+    // {
+    //     return $this->filename;
+    // }
+
+    // public function setFile(string $filename): self
+    // {
+    //     $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    //     $basename = pathinfo($filename, PATHINFO_FILENAME);
+    //     $newFilename = $basename . '_' . Uuid::v4() . '.' . $extension;
+    //     $this->filename = $newFilename;
+
+    //     return $this;
+    // }
+
+    public function getPath(): ?string
     {
-        return $this->filename;
+        return $this->path;
     }
 
-    public function setFilename(string $filename): self
+    public function setPath(?string $path): self
     {
-        $this->filename = $filename;
+        $this->path = $path;
 
         return $this;
     }
@@ -61,5 +80,19 @@ class Image
         $this->trick = $trick;
 
         return $this;
+    }
+
+    public function getImageFile(): ?UploadedFile
+    {
+        return $this->imageFile;
+    }
+
+
+    public function setImageFile(?UploadedFile $imageFile = null)
+    {
+        $this->imageFile = $imageFile;
+        if ($imageFile) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
     }
 }
