@@ -36,6 +36,7 @@ class TrickController extends AbstractController
     {
         $detailTrick = $trick->findOneBy(['name' => $tricks]);
         $showComments = $commentRepo->findBy(['trick' => $detailTrick], ['createdAt' => 'DESC']);
+        //$user = $commentRepo->findoneBy(['tricks' => $detailTrick], ['date_created' => 'DESC']);
 
         // Ajouter un commentaire
         $addComment = new Comment();
@@ -44,10 +45,8 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Sauvegarder les modifications dans la base de données
-            //dd($this->getUser());
-            $createdAt = new \DateTimeImmutable();
-            $addComment->setCreatedAt($createdAt);
-            $addComment->setTrick($detailTrick);
+            // dd($detailTrick->getId());
+            $addComment->setTrick($detailTrick->getId());
             $addComment->setAuthor($this->getUser());
 
             $entityManager->persist($addComment);
@@ -55,7 +54,7 @@ class TrickController extends AbstractController
 
             //$this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', 'Votre Commentaire à été ajouté !');
-            //return $this->redirectToRoute('trick_show');
+            return $this->redirectToRoute('trick_show');
         }
     
         return $this->render('tricks\show.html.twig', [

@@ -15,20 +15,18 @@ class Comment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User  $author = null;
+    #[ORM\Column(length: 255)]
+    private ?string $author = null;
 
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
-    
 
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: "comments")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Trick $trick;
+    private $trick;
     
 
     public function getId(): ?int
@@ -36,25 +34,14 @@ class Comment
         return $this->id;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
 
-    public function setAuthor(User $author): self
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
-    
-        return $this;
-    }
-    public function getTrick(): ?Trick
-    {
-        return $this->trick;
-    }
-
-    public function setTrick(Trick $trick): self
-    {
-        $this->trick = $trick;
 
         return $this;
     }
@@ -83,5 +70,15 @@ class Comment
         return $this;
     }
 
+    public function getTrick(): ?string
+    {
+        return $this->trick;
+    }
 
+    public function setTrick(string $trick): self
+    {
+        $this->trick = $trick;
+
+        return $this;
+    }
 }
