@@ -68,8 +68,10 @@
         <div  class="text-center m-4">
             {% for comment in showComments %}
                 {% if comment is not empty %}
-                    <p>{{ comment.author.email }}<span>{{comment.content}}</span></p>
-                    
+                    <div class="comment">
+                        <span class="comment-author">{{ comment.author.email }}</span>
+                        <span class="comment-content">{{ comment.content }}</span>
+                    </div>
                 {% else %}
                 <p>Vous n'avez aucun commentaire</p>
                 {% endif %}
