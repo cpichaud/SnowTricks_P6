@@ -42,3 +42,24 @@
     width: 20%;
     
 }
+
+.comment-section {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.comment-content {
+    flex-grow: 1;
+}

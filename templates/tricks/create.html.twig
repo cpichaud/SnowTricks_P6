@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Trick{% endblock %}
+{% block title %}Nouvelle figure{% endblock %}
 
 {% block body %}
     <section class="login">
-        <h1>Create new Trick</h1>
+        <h1>Créer une nouvelle figure</h1>
 
         {{ form_start(form) }}
             {{ form_widget(form) }}
             
-            <button id="add-image" type="button" class="btn btn-secondary">Add Image</button>
-            <button id="add-video" type="button" class="btn btn-primary">Add video</button>
+            <button id="add-image" type="button" class="btn btn-secondary">Ajout Image</button>
+            <button id="add-video" type="button" class="btn btn-primary">Ajout video</button>
             <button class="btn btn-success">{{ button_label|default('Save') }}</button>
         {{ form_end(form) }}
 
