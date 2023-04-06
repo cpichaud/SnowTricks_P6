@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
 
 {% block title %}Ajouter un trick{% endblock %}
 
@@ -48,4 +48,36 @@
 </script>
 
     </section>
+{% endblock %}
+ #}
+
+{# templates/trick/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}New Trick{% endblock %}
+
+{% block body %}
+    <h1>Create new Trick</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <button id="add-image" type="button" class="btn btn-secondary">Add Image</button>
+
+    <script>
+        document.getElementById('add-image').addEventListener('click', function() {
+            let imageFieldsList = document.querySelector('#trick_images');
+            let newImageField = document.createElement('li');
+
+            let newIndex = imageFieldsList.querySelectorAll('li').length;
+
+            newImageField.innerHTML = imageFieldsList.getAttribute('data-prototype')
+                .replace(/__name__/g, newIndex);
+
+            imageFieldsList.appendChild(newImageField);
+        });
+    </script>
 {% endblock %}
