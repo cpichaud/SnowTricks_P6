@@ -75,3 +75,19 @@ header{
     padding-top:20px;
 
 }
+
+
+/* FOOTER */
+
+footer {
+    background-color: #000000;
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+ }
+ 
+ footer p {
+    color: #ffffff;
+    font-size: 14px;
+ }
+ 
