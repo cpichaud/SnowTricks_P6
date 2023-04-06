@@ -1,83 +1,18 @@
-{# {% extends 'base.html.twig' %}
-
-{% block title %}Ajouter un trick{% endblock %}
-
-{% block body %}
-    <section class="login">
-        <h1>Ajouter un trick</h1>
-
-   {{ form_start(form) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.description) }}
-         {{ form_row(form.mainImage) }}
-        {{ form_label(form.images) }}
-        <ul class="images">
-      {{ form_widget(form.images, {'attr': {'class': 'custom-file-input', 'multiple': true}}) }}
-        </ul>
-    <div class="form-group">
-        <button type="button" class="btn btn-success" id="add_image">Ajouter une image</button>
-    </div>
-
-    <div id="images_container"
-         data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Ajouter</button>
-{{ form_end(form) }}
-
-<script>
-    const imagesContainer = document.getElementById('images_container');
-    const addButton = document.getElementById('add_image');
-
-    addButton.addEventListener('click', () => {
-        const prototype = imagesContainer.getAttribute('data-prototype');
-        const index = imagesContainer.children.length;
-
-        const formGroup = document.createElement('div');
-        formGroup.classList.add('form-group');
-
-        const newImage = prototype.replace(/__name__/g, index);
-
-        const imageWrapper = document.createElement('div');
-        imageWrapper.classList.add('form-group');
-        imageWrapper.innerHTML = newImage;
-
-        formGroup.appendChild(imageWrapper);
-        imagesContainer.appendChild(formGroup);
-    });
-</script>
-
-    </section>
-{% endblock %}
- #}
-
-{# templates/trick/new.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}New Trick{% endblock %}
 
 {% block body %}
-    <h1>Create new Trick</h1>
+    <section class="login">
+        <h1>Create new Trick</h1>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            
+            <button id="add-image" type="button" class="btn btn-secondary">Add Image</button>
+            <button id="add-video" type="button" class="btn btn-primary">Add video</button>
+            <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
 
-    <button id="add-image" type="button" class="btn btn-secondary">Add Image</button>
-
-    <script>
-        document.getElementById('add-image').addEventListener('click', function() {
-            let imageFieldsList = document.querySelector('#trick_images');
-            let newImageField = document.createElement('li');
-
-            let newIndex = imageFieldsList.querySelectorAll('li').length;
-
-            newImageField.innerHTML = imageFieldsList.getAttribute('data-prototype')
-                .replace(/__name__/g, newIndex);
-
-            imageFieldsList.appendChild(newImageField);
-        });
-    </script>
+    </section>
 {% endblock %}
