@@ -9,6 +9,7 @@ use App\Form\TrickType;
 use App\Form\CommentType;
 use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -138,40 +139,68 @@ class TrickController extends AbstractController
         return $newFilename;
     }
     
-/**
- * @Route("/trick/{id}/delete", name="trick_delete", methods={"GET"})
- */
-public function deleteTrick(int $id, TrickRepository $trickRepository, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
-{
-    $trick = $trickRepository->find($id);
-    $comments = $commentRepository->findBy(['trick' => $trick]);
+    /**
+     * @Route("/trick/{id}/delete", name="trick_delete", methods={"GET"})
+     */
+    public function deleteTrick(int $id, TrickRepository $trickRepository, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
+    {
+        $trick = $trickRepository->find($id);
+        $comments = $commentRepository->findBy(['trick' => $trick]);
 
-    if (!$trick) {
-        throw $this->createNotFoundException('Trick not found');
+        if (!$trick) {
+            throw $this->createNotFoundException('Trick not found');
+        }
+
+        if ($this->getUser() === $trick->getUser()) {
+            foreach ($trick->getVideos() as $video) {
+                $trick->removeVideo($video);
+                $entityManager->remove($video);
+            }
+            foreach ($trick->getImages() as $video) {
+                $trick->removeImage($video);
+                $entityManager->remove($video);
+            }
+            foreach ($comments as $comment) {
+                $entityManager->remove($comment);
+            }
+            $entityManager->remove($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Trick deleted successfully.');
+
+            return $this->redirectToRoute('app_home');
+        } else {
+            $this->addFlash('error', 'You can only delete tricks that you created.');
+
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
     }
 
-    if ($this->getUser() === $trick->getUser()) {
-        foreach ($trick->getVideos() as $video) {
-            $trick->removeVideo($video);
-            $entityManager->remove($video);
-        }
-        foreach ($trick->getImages() as $video) {
-            $trick->removeImage($video);
-            $entityManager->remove($video);
-        }
-        foreach ($comments as $comment) {
+    /**
+     * @Route("/comment/{id}/delete", name="comment_delete", methods={"GET"})
+     */
+    public function deleteComment(
+        int $id,
+        CommentRepository $commentRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Récupérer le commentaire par son ID
+        $comment = $commentRepository->find($id);
+
+        // Vérifier si le commentaire existe et si l'utilisateur connecté est l'auteur du commentaire
+        if ($comment && $this->getUser() === $comment->getAuthor()) {
+            // Supprimer le commentaire
             $entityManager->remove($comment);
+            $entityManager->flush();
         }
-        $entityManager->remove($trick);
-        $entityManager->flush();
 
-        $this->addFlash('success', 'Trick deleted successfully.');
-
-        return $this->redirectToRoute('app_home');
-    } else {
-        $this->addFlash('error', 'You can only delete tricks that you created.');
-
-        return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        if ($comment) {
+            return $this->redirectToRoute('app_home');
+        } else {
+            // Rediriger vers une page d'erreur ou une autre page si le commentaire n'existe pas
+            return $this->redirectToRoute('some_error_page');
+        }
     }
-}
+
+
 }
