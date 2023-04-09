@@ -11,6 +11,7 @@ use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -136,48 +137,41 @@ class TrickController extends AbstractController
 
         return $newFilename;
     }
-}
-
-// /**
-//  * @Route("/trick/new", name="trick_new")
-//  */
-// public function new(Request $request, EntityManagerInterface $entityManager): Response
-// {
-//     $trick = new Trick();
-
-//     $image = new Image();
-//     $trick->getImages()->add($image);
-
-//     $form = $this->createForm(TrickType::class, $trick);
-
-//     $form->handleRequest($request);
-
-//     if ($form->isSubmitted() && $form->isValid()) {
-
-//         $trick->setUser($this->getUser());
-//         $trick->setCreatedAt(new \DateTimeImmutable());
-//         $trick->setUpdatedAt(new \DateTimeImmutable());
-
-//         // foreach ($trick->getImages() as $image) {
-//         //     $imageFile = $image->getImageFile();
-//         //     if ($imageFile) {
-//         //         $fileName = md5(uniqid()) . '.' . $imageFile->guessExtension();
-//         //         $imageFile->move($this->getParameter('images_directory'), $fileName);
-//         //         $image->setPath($fileName);
-//         //     }
-//         // }
-//         $entityManager->persist($trick);
-//         $entityManager->flush();
-
-//         $this->addFlash('success', 'Le trick a bien été ajouté !');
-
-//         return $this->redirectToRoute('app_home');
-//     }
-
-//     return $this->render('tricks/create.html.twig', [
-//         'form' => $form->createView(),
-//     ]);
-// }
-
     
-//}
+/**
+ * @Route("/trick/{id}/delete", name="trick_delete", methods={"GET"})
+ */
+public function deleteTrick(int $id, TrickRepository $trickRepository, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
+{
+    $trick = $trickRepository->find($id);
+    $comments = $commentRepository->findBy(['trick' => $trick]);
+
+    if (!$trick) {
+        throw $this->createNotFoundException('Trick not found');
+    }
+
+    if ($this->getUser() === $trick->getUser()) {
+        foreach ($trick->getVideos() as $video) {
+            $trick->removeVideo($video);
+            $entityManager->remove($video);
+        }
+        foreach ($trick->getImages() as $video) {
+            $trick->removeImage($video);
+            $entityManager->remove($video);
+        }
+        foreach ($comments as $comment) {
+            $entityManager->remove($comment);
+        }
+        $entityManager->remove($trick);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Trick deleted successfully.');
+
+        return $this->redirectToRoute('app_home');
+    } else {
+        $this->addFlash('error', 'You can only delete tricks that you created.');
+
+        return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+    }
+}
+}
