@@ -39,7 +39,7 @@
                 {% for video in detailTrick.videos %}
                     <div class="col">
                         <div class="video-container">
-                            <iframe width="100%" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="300" height="200" src="{{ video.url|replace({'watch?v=': 'embed/'}) }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 {% endfor %}
@@ -52,8 +52,7 @@
     <div class ="info_detail">
         <p>{{ detailTrick.getCreatedAt()|date('d/m/Y H:i:s') }}</p>
         <p>{{ detailTrick.getUpdatedAt()|date('d/m/Y H:i:s') }}</p>
-        <p>Admin</p>
-        {# <p>{{detailTrick.user}}</p> #}
+        <p>{{email}}</p>
     </div>
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -68,6 +67,11 @@
 
     <div  class="m-4">
         <h5>Espace commentaires</h5>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div  class="text-center m-4">
             {% for comment in showComments %}
                 {% if comment is not empty %}
