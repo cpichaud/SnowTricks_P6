@@ -37,18 +37,26 @@ header{
     max-width: 75%;
     display: flex;
     flex-wrap: wrap;
-    margin: 154px;
+    margin-left: 198px;
 }
 
 .flex_container div {
-    width: 100px;
-    height: 100px;
-    margin: 80px;
-    background-color: lightblue;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 5px;
+    padding: 5px;
+    width: 179px;
+    object-fit: cover;
+    margin: 40px;
+    color: #000000;
+    background-color: rgb(255, 255, 255);
 }
 
 .tricks_home{
-    max-width: 250px;
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    max-width: 100%;
+    color: #000000;
 }
 
 .card-item {
@@ -62,7 +70,9 @@ header{
     display: none;
   }
 
-
+.name_home{
+    color: #000000;
+}
   
 .login{
     margin: 500px;
@@ -90,4 +100,15 @@ footer {
     color: #ffffff;
     font-size: 14px;
  }
+
+ @media (max-width: 600px) {
+
+    .flex_container {
+        margin-left: 100px;
+    }
+    
+    .flex_container div {
+        margin-top: 10px;
+    }
+  }
  
