@@ -17,7 +17,11 @@
         {% for trick in tricks %}
             {% if trick is defined and trick is not empty %}
                 <div class="card-container card-item">
-                    <img class ="tricks_home" src="{{ asset('uploads/' ~  trick.mainImage) }}" alt="{{ trick.name  }}" />
+                   {% for image in trick.images %}
+                        {% if loop.first %}
+                                <img src="{{ asset('/uploads/' ~ image.path) }}" class="img-fluid" alt="{{ image.path }}">
+                        {% endif %}
+                    {% endfor %}
                     <a href="{{ path('trick_show', {'tricks': trick.name}) }}" class="text-decoration-none name_home">{{ trick.name }}</a>
                     {% if app.user == trick.user %}
                         <a href="{{ path('trick_edit', {'name': trick.name}) }}">

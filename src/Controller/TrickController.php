@@ -78,9 +78,7 @@ class TrickController extends AbstractController
     }
 
 
-    /**
-    * @Route("/trick/new", name="trick_new", methods={"GET","POST"})
-    */
+    #[Route('/trick/new', name: 'trick_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $trick = new Trick();
@@ -92,15 +90,6 @@ class TrickController extends AbstractController
             $trick->setCreatedAt(new \DateTimeImmutable());
             $trick->setUpdatedAt(new \DateTimeImmutable());
             $trick->setUser($this->getUser());
-
-            // Handle main image upload
-            $mainImage = $form->get('mainImage')->getData();
-            if ($mainImage) {
-                $mainImageFilename = $this->uploadImage($mainImage);
-                if ($mainImageFilename) {
-                    $trick->setMainImage($mainImageFilename);
-                }
-            }
 
             // Handle additional images upload
             foreach ($trick->getImages() as $image) {
@@ -184,9 +173,7 @@ class TrickController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/comment/{id}/delete", name="comment_delete", methods={"GET"})
-     */
+    #[Route('/comment/{id}/delete', name: 'comment_delete', methods: ['GET'])]
     public function deleteComment(
         int $id,
         CommentRepository $commentRepository,
@@ -194,8 +181,6 @@ class TrickController extends AbstractController
     ): Response {
         // Récupérer le commentaire par son ID
         $comment = $commentRepository->find($id);
-
-        // Vérifier si le commentaire existe et si l'utilisateur connecté est l'auteur du commentaire
         if ($comment && $this->getUser() === $comment->getAuthor()) {
             // Supprimer le commentaire
             $entityManager->remove($comment);
@@ -205,7 +190,6 @@ class TrickController extends AbstractController
         if ($comment) {
             return $this->redirectToRoute('app_home');
         } else {
-            // Rediriger vers une page d'erreur ou une autre page si le commentaire n'existe pas
             return $this->redirectToRoute('some_error_page');
         }
     }
@@ -213,37 +197,28 @@ class TrickController extends AbstractController
     #[Route('/trick/{name}/edit', name: 'trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $em, TrickRepository $trickRepository, string $name): Response
     {
-        $trick = $trickRepository->findOneByName($name);
-
-
-    
+        $trick = $trickRepository->findOneByName($name);    
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
-        $mainImage = $form->get('mainImage')->getData();
-        // $cc = $form->isSubmitted();
-        // $tt = $form->isValid();
-        // dump($cc, $tt);
-    
-        // dd( $form->handleRequest($request));
         if ($form->isSubmitted() && $form->isValid()) {
-            //dump($request);
-            $trick->setUpdatedAt(new \DateTimeImmutable());
-               // Handle main image upload
-               $mainImage = $form->get('mainImage')->getData();
-               if ($mainImage) {
-                   $mainImageFilename = $this->uploadImage($mainImage);
-                   if ($mainImageFilename) {
-                       $trick->setMainImage($mainImageFilename);
-                   }
-               }
-    
-            $em->persist($trick);
-            $em->flush();
-    
-            $this->addFlash('success', 'La trick a été modifiée avec succès.');
-    
-            return $this->redirectToRoute('trick_show', ['trick' => $trick->getName()]);
+                foreach ($trick->getImages() as $image) {
+                    $uploadedFile = $image->getImageFile();
+                    if ($uploadedFile) {
+                        $filename = $this->uploadImage($uploadedFile);
+                        if ($filename) {
+                            $image->setPath($filename);
+                            $image->setCreatedAt(new \DateTimeImmutable());
+                        }
+                    }
+                }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La figure a été mis à jour avec succès !');
+
+            return $this->redirectToRoute('app_home');
         }
     
         return $this->render('tricks/edit.html.twig', [
