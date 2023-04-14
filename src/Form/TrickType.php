@@ -33,7 +33,7 @@ class TrickType extends AbstractType
             ->add('mainImage', FileType::class, [
                 'label' => 'Main Image',
                 'mapped' => false,
-                'required' => false, 
+                'required' => true, 
                 'attr' => [
                     'class' => 'form-control',
                 ],

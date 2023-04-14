@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la trick{% endblock %}
+
+{% block body %}
+    <section class="login">
+        <h1>Modifier {{trick.name}}</h1>
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <button id="add-image" type="button" class="btn btn-secondary">Ajout Image</button>
+            <button id="add-video" type="button" class="btn btn-primary">Ajout video</button>
+            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
+

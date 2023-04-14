@@ -91,7 +91,7 @@ class TrickController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $trick->setCreatedAt(new \DateTimeImmutable());
             $trick->setUpdatedAt(new \DateTimeImmutable());
-            $trick->setUser($this->getUser()); // Set the current user as the author
+            $trick->setUser($this->getUser());
 
             // Handle main image upload
             $mainImage = $form->get('mainImage')->getData();
@@ -210,5 +210,46 @@ class TrickController extends AbstractController
         }
     }
 
+    #[Route('/trick/{name}/edit', name: 'trick_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, EntityManagerInterface $em, TrickRepository $trickRepository, string $name): Response
+    {
+        $trick = $trickRepository->findOneByName($name);
 
+
+    
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        $mainImage = $form->get('mainImage')->getData();
+        // $cc = $form->isSubmitted();
+        // $tt = $form->isValid();
+        // dump($cc, $tt);
+    
+        // dd( $form->handleRequest($request));
+        if ($form->isSubmitted() && $form->isValid()) {
+            //dump($request);
+            $trick->setUpdatedAt(new \DateTimeImmutable());
+               // Handle main image upload
+               $mainImage = $form->get('mainImage')->getData();
+               if ($mainImage) {
+                   $mainImageFilename = $this->uploadImage($mainImage);
+                   if ($mainImageFilename) {
+                       $trick->setMainImage($mainImageFilename);
+                   }
+               }
+    
+            $em->persist($trick);
+            $em->flush();
+    
+            $this->addFlash('success', 'La trick a été modifiée avec succès.');
+    
+            return $this->redirectToRoute('trick_show', ['trick' => $trick->getName()]);
+        }
+    
+        return $this->render('tricks/edit.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+        ]);
+    
+    }
 }
