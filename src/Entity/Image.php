@@ -31,21 +31,6 @@ class Image
         return $this->id;
     }
 
-    // public function getFile(): ?string
-    // {
-    //     return $this->filename;
-    // }
-
-    // public function setFile(string $filename): self
-    // {
-    //     $extension = pathinfo($filename, PATHINFO_EXTENSION);
-    //     $basename = pathinfo($filename, PATHINFO_FILENAME);
-    //     $newFilename = $basename . '_' . Uuid::v4() . '.' . $extension;
-    //     $this->filename = $newFilename;
-
-    //     return $this;
-    // }
-
     public function getPath(): ?string
     {
         return $this->path;

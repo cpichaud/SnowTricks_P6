@@ -31,10 +31,6 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, cascade: ["persist"])]
     private Collection $images;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\File(mimeTypes: ['image/jpeg', 'image/png', 'image/tiff', 'image/svg+xml'])]
-    private $mainImage;
-
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     private ?User $user = null;
 
@@ -126,26 +122,6 @@ class Trick
                 $image->setTrick(null);
             }
         }
-
-        return $this;
-    }
-
-        /**
-     * Get the value of mainImage
-     */ 
-    public function getMainImage()
-    {
-        return $this->mainImage;
-    }
-
-    /**
-     * Set the value of mainImage
-     *
-     * @return  self
-     */ 
-    public function setMainImage($mainImage)
-    {
-        $this->mainImage = $mainImage;
 
         return $this;
     }
