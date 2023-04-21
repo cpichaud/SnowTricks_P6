@@ -5,6 +5,11 @@
 {% block body %}
     <section class="login">
         <h2>Connexion</h2>
+        {% for message in app.flashes('success_verified') %}
+            <div class="alert alert-success" role="alert">
+            {{ message }}
+            </div>
+        {% endfor %}
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
