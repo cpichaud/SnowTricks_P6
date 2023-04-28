@@ -2,10 +2,8 @@
 
 namespace App\Entity;
 
-use App\Entity\Trick;
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CommentRepository;
-use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -17,19 +15,17 @@ class Comment
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User  $author = null;
+    private ?User $author = null;
 
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
-    
 
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: "comments")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Trick $trick;
-    
+    private ?Trick $trick = null;
 
     public function getId(): ?int
     {
@@ -44,9 +40,10 @@ class Comment
     public function setAuthor(User $author): self
     {
         $this->author = $author;
-    
+
         return $this;
     }
+
     public function getTrick(): ?Trick
     {
         return $this->trick;
@@ -82,6 +79,4 @@ class Comment
 
         return $this;
     }
-
-
 }

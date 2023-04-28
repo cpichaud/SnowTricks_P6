@@ -43,16 +43,26 @@ class Trick
         $this->videos = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Trick
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -60,11 +70,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return Trick
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -72,11 +89,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTimeImmutable $createdAt
+     * @return Trick
+     */
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -84,11 +108,18 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable|null
+     */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTimeImmutable $updatedAt
+     * @return Trick
+     */
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
@@ -104,16 +135,24 @@ class Trick
         return $this->images;
     }
 
+    /**
+     * @param Image $image
+     * @return Trick
+     */
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
             $image->setTrick($this);
         }
-    
+
         return $this;
     }
 
+    /**
+     * @param Image $image
+     * @return Trick
+     */
     public function removeImage(Image $image): self
     {
         if ($this->images->removeElement($image)) {
@@ -146,6 +185,11 @@ class Trick
         return $this->videos;
     }
 
+    /**
+     * Add a video to the trick.
+     * @param Video $video The video to add
+     * @return self
+     */
     public function addVideo(Video $video): self
     {
         if (!$this->videos->contains($video)) {
@@ -156,9 +200,14 @@ class Trick
         return $this;
     }
 
+    /**
+     * Remove a video from the trick.
+     * @param Video $video The video to remove
+     * @return self
+     */
     public function removeVideo(Video $video): self
     {
-        if ($this->videos->removeElement($video)) {
+        if ($this->videos->removeElement($video) === true) {
             // set the owning side to null (unless already changed)
             if ($video->getTrick() === $this) {
                 $video->setTrick(null);
