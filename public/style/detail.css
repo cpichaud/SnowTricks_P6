@@ -3,27 +3,24 @@
     width: 100%;
     overflow: hidden;
 }
-
 .tricks_details{
     width: 100%;
     object-fit: cover;
 }
-
 .title_detail{
     position: absolute;
     margin-top: 300px;
     margin-left: 200px;
     color: aliceblue;
+    background-color: #0000005c;
+    padding: 15px;
 }
-
 /* INFORMATION  */
-
 .info_detail {
     display: flex;
     flex-wrap: wrap; 
     justify-content: center;
-  }
-
+}
 .info_detail p {
     color: white;
     background-color: black;
@@ -42,24 +39,20 @@
     width: 20%;
     
 }
-
 .comment-section {
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 5px;
 }
-
 .comment {
     display: flex;
     align-items: center;
     padding: 0.5rem 0;
 }
-
 .comment-author {
     font-weight: bold;
     margin-right: 1rem;
 }
-
 .comment-content {
     flex-grow: 1;
 }

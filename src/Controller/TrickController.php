@@ -2,17 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Comment;
 use App\Form\TrickType;
 use App\Form\CommentType;
 use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,6 +57,8 @@ class TrickController extends AbstractController
             $entityManager->persist($addComment);
             $entityManager->flush();
             $this->addFlash('success', 'Votre Commentaire à été ajouté !');
+            
+            $showComments = $commentRepo->findBy(['trick' => $detailTrick], ['createdAt' => 'DESC']);
 
             return $this->render('tricks\show.html.twig', [
                 'detailTrick' => $detailTrick,
@@ -91,7 +90,6 @@ class TrickController extends AbstractController
             $trick->setUpdatedAt(new \DateTimeImmutable());
             $trick->setUser($this->getUser());
 
-            // Handle additional images upload
             foreach ($trick->getImages() as $image) {
                 $uploadedFile = $image->getImageFile();
                 if ($uploadedFile) {
@@ -115,8 +113,6 @@ class TrickController extends AbstractController
         ]);
     }
 
-    // ...
-
     private function uploadImage($file): ?string
     {
         $uploadDirectory = $this->getParameter('upload_directory');
@@ -129,16 +125,13 @@ class TrickController extends AbstractController
                 $newFilename
             );
         } catch (FileException $e) {
-            // Unable to upload the image, return null
             return null;
         }
 
         return $newFilename;
     }
     
-    /**
-     * @Route("/trick/{id}/delete", name="trick_delete", methods={"GET"})
-     */
+    #[Route('/trick/{id}/delete', name: 'trick_delete', methods: ['GET'])]
     public function deleteTrick(int $id, TrickRepository $trickRepository, EntityManagerInterface $entityManager, CommentRepository $commentRepository): Response
     {
         $trick = $trickRepository->find($id);
@@ -163,7 +156,7 @@ class TrickController extends AbstractController
             $entityManager->remove($trick);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Trick deleted successfully.');
+            $this->addFlash('success', 'La figure a bien été modifiée.');
 
             return $this->redirectToRoute('app_home');
         } else {
@@ -216,7 +209,7 @@ class TrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
 
-            $this->addFlash('success', 'La figure a été mis à jour avec succès !');
+            $this->addFlash('success_modif', 'La figure a été mis à jour avec succès !');
 
             return $this->redirectToRoute('app_home');
         }
@@ -225,6 +218,5 @@ class TrickController extends AbstractController
             'trick' => $trick,
             'form' => $form->createView(),
         ]);
-    
     }
 }
