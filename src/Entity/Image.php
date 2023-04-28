@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -31,11 +30,18 @@ class Image
         return $this->id;
     }
 
+    /**
+     * @return ?string
+     */
     public function getPath(): ?string
     {
         return $this->path;
     }
 
+    /**
+     * @param ?string $path
+     * @return $this
+     */
     public function setPath(?string $path): self
     {
         $this->path = $path;
@@ -43,11 +49,18 @@ class Image
         return $this;
     }
 
+    /**
+     * @return ?\DateTimeImmutable
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTimeImmutable $createdAt
+     * @return $this
+     */
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -55,11 +68,18 @@ class Image
         return $this;
     }
 
+    /**
+     * @return ?Trick
+     */
     public function getTrick(): ?Trick
     {
         return $this->trick;
     }
 
+    /**
+     * @param ?Trick $trick
+     * @return $this
+     */
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
@@ -67,13 +87,19 @@ class Image
         return $this;
     }
 
+    /**
+     * @return ?UploadedFile
+     */
     public function getImageFile(): ?UploadedFile
     {
         return $this->imageFile;
     }
 
-
-    public function setImageFile(?UploadedFile $imageFile = null)
+    /**
+     * @param ?UploadedFile $imageFile
+     * @return void
+     */
+    public function setImageFile(?UploadedFile $imageFile = null): void
     {
         $this->imageFile = $imageFile;
         if ($imageFile) {

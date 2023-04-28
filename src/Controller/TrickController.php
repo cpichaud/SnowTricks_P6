@@ -18,32 +18,20 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class TrickController extends AbstractController
 {
-    #[Route('/trick', name: 'app_trick')]
-    public function index(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/TrickController.php',
-        ]);
-    }
+
 
     #[Route('/{tricks}', name: 'trick_show')]
-    public function show(
-        TrickRepository $trick, 
-        CommentRepository $commentRepo, 
-        $tricks, Request $request, 
-        EntityManagerInterface $entityManager
-    ): Response
+    public function show(TrickRepository $trick, CommentRepository $commentRepo, $tricks, Request $request, EntityManagerInterface $entityManager): Response
     {
         $detailTrick = $trick->findOneBy(['name' => $tricks]);
         $showComments = $commentRepo->findBy(['trick' => $detailTrick], ['createdAt' => 'DESC']);
 
-        // Récupérez l'utilisateur associé à la trick
+        // Récupérez l'utilisateur associé à la trick.
         $user = $detailTrick->getUser();
         
-        // Récupérez l'email de l'utilisateur
+        // Récupérez l'email de l'utilisateur.
         $email = $user->getEmail();
-        // Ajouter un commentaire
+        // Ajouter un commentaire.
         $addComment = new Comment();
         $form = $this->createForm(CommentType::class, $addComment);
         $form->handleRequest($request);
@@ -60,7 +48,7 @@ class TrickController extends AbstractController
             
             $showComments = $commentRepo->findBy(['trick' => $detailTrick], ['createdAt' => 'DESC']);
 
-            return $this->render('tricks\show.html.twig', [
+            return $this->render('tricks/show.html.twig', [
                 'detailTrick' => $detailTrick,
                 'showComments' => $showComments,
                 'form' => $form->createView(),
@@ -68,7 +56,7 @@ class TrickController extends AbstractController
             ]);
         }
     
-        return $this->render('tricks\show.html.twig', [
+        return $this->render('tricks/show.html.twig', [
             'detailTrick' => $detailTrick,
             'showComments' => $showComments,
             'form' => $form->createView(),
@@ -166,15 +154,12 @@ class TrickController extends AbstractController
     }
 
     #[Route('/comment/{id}/delete', name: 'comment_delete', methods: ['GET'])]
-    public function deleteComment(
-        int $id,
-        CommentRepository $commentRepository,
-        EntityManagerInterface $entityManager
-    ): Response {
-        // Récupérer le commentaire par son ID
+    public function deleteComment(int $id, CommentRepository $commentRepository, EntityManagerInterface $entityManager): Response 
+    {
+        // Récupérer le commentaire par son ID.
         $comment = $commentRepository->find($id);
         if ($comment && $this->getUser() === $comment->getAuthor()) {
-            // Supprimer le commentaire
+            // Supprimer le commentaire.
             $entityManager->remove($comment);
             $entityManager->flush();
         }
@@ -187,7 +172,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{name}/edit', name: 'trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $em, TrickRepository $trickRepository, string $name): Response
+    public function edit(Request $request, TrickRepository $trickRepository, string $name): Response
     {
         $trick = $trickRepository->findOneByName($name);    
         $form = $this->createForm(TrickType::class, $trick);
