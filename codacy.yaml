@@ -1,0 +1,9 @@
+tools:
+  eslint:
+    enabled: true
+    target: ./src
+    patterns:
+      - "*.js"
+      - "*.jsx"
+      - "*.ts"
+      - "*.tsx"

@@ -159,11 +159,10 @@ class TrickController extends AbstractController
             $this->addFlash('success', 'La figure a bien été modifiée.');
 
             return $this->redirectToRoute('app_home');
-        } else {
-            $this->addFlash('error', 'You can only delete tricks that you created.');
-
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
+        
+        $this->addFlash('error', 'You can only delete tricks that you created.');
+        return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
     }
 
     #[Route('/comment/{id}/delete', name: 'comment_delete', methods: ['GET'])]
