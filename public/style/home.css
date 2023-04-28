@@ -88,8 +88,25 @@ color: #ffffff;
 font-size: 14px;
 }
 
+
+
  @media (max-width: 600px) {
 
+    #home_image{
+        height: 630px;
+        background-image: url("../images/Tricks/backflip2.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+    .slogan{
+        background-color: #ffffff91;
+        padding: 10px;
+    }
+    
     .flex_container {
         margin-left: 100px;
     }
@@ -103,3 +120,5 @@ font-size: 14px;
     margin-left: 97%;
     color: black;
   }
+
+  

@@ -57,6 +57,8 @@ class TrickController extends AbstractController
             $entityManager->persist($addComment);
             $entityManager->flush();
             $this->addFlash('success', 'Votre Commentaire à été ajouté !');
+            
+            $showComments = $commentRepo->findBy(['trick' => $detailTrick], ['createdAt' => 'DESC']);
 
             return $this->render('tricks\show.html.twig', [
                 'detailTrick' => $detailTrick,
@@ -154,7 +156,7 @@ class TrickController extends AbstractController
             $entityManager->remove($trick);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Trick deleted successfully.');
+            $this->addFlash('success', 'La figure a bien été modifiée.');
 
             return $this->redirectToRoute('app_home');
         } else {
@@ -207,7 +209,7 @@ class TrickController extends AbstractController
             $entityManager->persist($trick);
             $entityManager->flush();
 
-            $this->addFlash('success', 'La figure a été mis à jour avec succès !');
+            $this->addFlash('success_modif', 'La figure a été mis à jour avec succès !');
 
             return $this->redirectToRoute('app_home');
         }
