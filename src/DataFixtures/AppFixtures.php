@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
 use DateTimeImmutable;
@@ -25,6 +26,8 @@ class AppFixtures extends Fixture
         // Create a user
         $user = new User();
         $user->setEmail('user@example.com');
+        $user->setName('john');
+        $user->setProfileImage('https://blogs.burton.com/blogs/media/images/KellyClark_TrickTips_Blotto_9.2e16d0ba.fill-1000x800-c75.jpg');
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(
                 $user,
@@ -62,6 +65,11 @@ class AppFixtures extends Fixture
             $video->setUrl('https://www.youtube.com/watch?v=PxhfDec8Ays');
             $video->setTrick($trick);
 
+            $image = new Image();
+            $image->setPath('13-6453a26aaca68.jpg');
+            $image->setCreatedAt(new \DateTimeImmutable());
+            $image->setTrick($trick);
+
              // Add 3-5 comments per trick
              $numComments = random_int(3, 5);
              for ($j = 0; $j < $numComments; $j++) {
@@ -73,8 +81,7 @@ class AppFixtures extends Fixture
  
                  $manager->persist($comment);
              }
-
-
+            $manager->persist($image);
             $manager->persist($video);
             $manager->persist($trick);
         }

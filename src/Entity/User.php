@@ -22,9 +22,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[ORM\Column(length: 180)]
+    private ?string $name = null;
+
     #[ORM\Column]
     private array $roles = [];
 
+    #[ORM\Column]
+    private ?string $profileImage = null;
+    
     /**
      * @var string The hashed password
      */
@@ -169,6 +175,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $trick->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of name
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */ 
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profileImage
+     */ 
+    public function getProfileImage()
+    {
+        return $this->profileImage;
+    }
+
+    /**
+     * Set the value of profileImage
+     *
+     * @return  self
+     */ 
+    public function setProfileImage($profileImage)
+    {
+        $this->profileImage = $profileImage;
 
         return $this;
     }

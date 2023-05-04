@@ -76,6 +76,11 @@ header{
     padding-top:20px;
 
 }
+.image_profile{
+    border-radius: 100%;
+    border: 2px solid black;
+}
+
 /* FOOTER */
 footer {
     background-color: #000000;
