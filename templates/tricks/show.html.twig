@@ -29,8 +29,14 @@
     <div class="text-center m-4">
         <p>{{detailTrick.description}}</p>
     </div>
+    <button id="toggle-media-button" class="btn btn-dark d-md-none text-center m-2"> <span>Afficher les médias</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+        </svg>
+    </button>
     {% if detailTrick.images|length > 0 %}
-        <div class="container">
+        <div class="media-container container m-2">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 {% for image in detailTrick.images %}
                     <div class="col">
@@ -42,7 +48,7 @@
     {% endif %}
 
     {% if detailTrick.videos|length > 0 %}
-        <div class="container mt-4">
+        <div class="media-container container mt-4">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 {% for video in detailTrick.videos %}
                     <div class="col">
@@ -100,4 +106,42 @@
     </div>
 
 </main>
+
+
+<script>
+    const toggleMediaButton = document.getElementById('toggle-media-button');
+    const mediaContainers = document.querySelectorAll('.media-container');
+    const buttonTextSpan = toggleMediaButton.querySelector('span');
+
+    const isMobile = () => window.innerWidth < 768;
+
+    toggleMediaButton.addEventListener('click', () => {
+        const buttonText = buttonTextSpan.textContent.trim();
+        
+        if (buttonText === 'Afficher les médias') {
+            buttonTextSpan.textContent = 'Masquer les médias';
+            mediaContainers.forEach(container => container.style.display = 'block');
+        } else {
+            buttonTextSpan.textContent = 'Afficher les médias';
+            mediaContainers.forEach(container => container.style.display = 'none');
+        }
+    });
+
+    // Masquer les médias par défaut sur les écrans mobiles
+    if (isMobile()) {
+        mediaContainers.forEach(container => container.style.display = 'none');
+    }
+
+    // Mettre à jour l'affichage des médias lors du redimensionnement de la fenêtre
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            mediaContainers.forEach(container => container.style.display = buttonTextSpan.textContent.trim() === 'Afficher les médias' ? 'none' : 'block');
+        } else {
+            mediaContainers.forEach(container => container.style.display = 'block');
+        }
+    });
+</script>
+
+
 {% endblock %}
+
